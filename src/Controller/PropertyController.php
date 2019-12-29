@@ -6,8 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Property;
+use App\Entity\PropertySeach;
+use App\Form\PropertySeachType;
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class PropertyController extends AbstractController{
     /**
@@ -50,13 +54,19 @@ class PropertyController extends AbstractController{
      * @Route("/biens",name="property.index")
      * @return Response
      */
-    public function index():Response
+    public function index(PaginatorInterface $paginator, Request $request):Response
     {
-        $property = $this->repository->findAllVisible();
+        $seach = new PropertySeach();
+        $fom = $this->createForm(PropertySeachType::class,$seach);
+        $fom->handleRequest($request);
+
+        $properties = $paginator->paginate($this->repository->findAllVisibleQuery($seach), 
+        $request->query->getInt('page', 1),12);
         $this->em->flush();
-        dump($property);
         return $this->render('property/property.html.twig',[
-            'current_menu' => 'properties'
+            'current_menu' => 'properties',
+            'properties'   => $properties,
+            'form'         => $fom->createView()
         ]);
     }
 }

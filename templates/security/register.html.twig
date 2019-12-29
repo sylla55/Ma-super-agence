@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Créer un compte</h1>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-4"> {{ form_row(form.username) }}</div>
+            <div class="col-md-4"> {{ form_row(form.password) }}</div>
+            {{ form_widget(form) }}
+            <div class="col-md-8"><button class="btn btn-dark">S'inscrire</button></div>
+        </div>
+       
+        {{ form_end(form) }}
+    </div>
+
+        
+       
+        
+        
+{% endblock %}
