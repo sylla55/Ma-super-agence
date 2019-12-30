@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,6 +25,7 @@ class Property
     public function __construct()
     {
         $this->created_at = new DateTime();
+        $this->options = new ArrayCollection();
     }
 
     /**
@@ -105,6 +108,11 @@ class Property
      * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="propieties")
+     */
+    private $options;
 
     public function getId(): ?int
     {
@@ -285,6 +293,34 @@ class Property
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|options[]
+     */
+    public function getoptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addoptions(Option $options): self
+    {
+        if (!$this->options->contains($options)) {
+            $this->options[] = $options;
+            $options->addPropiety($this);
+        }
+
+        return $this;
+    }
+
+    public function removeoptions(Option $options): self
+    {
+        if ($this->options->contains($options)) {
+            $this->options->removeElement($options);
+            $options->removePropiety($this);
+        }
 
         return $this;
     }

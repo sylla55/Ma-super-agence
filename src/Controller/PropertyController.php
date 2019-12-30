@@ -40,14 +40,15 @@ class PropertyController extends AbstractController{
     {
         if($property->getSlug() !== $slug){
             $this->redirectToRoute('property.show',[
-                'id' => $property->getId(),
-                'slug' => $property->getSlug()
+                'id'    => $property->getId(),
+                'slug'  => $property->getSlug()
             ], 301);
         }
         return $this->render('property/show.html.twig',[
-            'current_menu' => 'properties',
-            'property' =>$property
+            'current_menu'  => 'properties',
+            'property'      =>$property
         ]);
+
     }
 
     /**

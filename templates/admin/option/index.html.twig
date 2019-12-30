@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title 'Gerer tous les options' %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% if app.session.flashBag.has('success') %}
+            <div class="alert alert-success">
+                {% for msg in app.session.flashBag.get('success') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h1>Gérer les options</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Nom</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for option in options %}
+                    <tr>
+                        <td>{{ option.name }}</td>
+                        <td><a href="{{ path('admin.option.edit',{id: option.id}) }}" class="btn btn-secondary">Editer</a>
+                            <form method="POST" action="{{ path('admin.option.delete',{id: option.id})}}" 
+                            style="display: inline-block;" onsubmit="return confirm('Etes vous vraiment sur ?')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ option.id) }}">
+                                <input type="hidden" value="DELETE" name="_method">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('admin.property.index') }}" class="btn btn-secondary">Liste des biens</a>
+            <a href="{{ path('admin.option.create') }}" class="btn btn-secondary">Créer un nouveau bien</a>
+        </div>
+    </div>
+{% endblock %}

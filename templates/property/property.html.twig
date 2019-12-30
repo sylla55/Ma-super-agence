@@ -5,16 +5,21 @@
     <div class="jumbotron">
         <div class="container">
             {{ form_start(form) }}
-            <div class='form-row'>
-                <div class='col'>
-                    {{ form_row(form.minSurface) }}
+             <div class="form-group">
+                <div class='form-row'>
+                    <div class='col'>
+                        {{ form_row(form.minSurface) }}
+                    </div>
+                    <div class='col'>
+                        {{ form_row(form.maxPrice) }}
+                    </div>
+                    <div class='col-2'>
+                        <button class='btn btn-dark'>Rechercher</button>
+                    </div>
                 </div>
-                <div class='col'>
-                    {{ form_row(form.maxPrice) }}
-                </div>
-                <div class='col-2'>
-                    <button class='btn btn-dark'>Rechercher</button>
-                </div>
+            </div>
+             <div class="form-group">
+                {{ form_row(form.options) }}
             </div>
             {{ form_end(form) }}
         </div>
